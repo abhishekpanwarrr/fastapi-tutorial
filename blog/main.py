@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, status, Response, HTTPException
 from .schemas import Blog
 from . import schemas, models, database
 from sqlalchemy.orm import Session
-
+from typing import List
 app = FastAPI()
 
 models.Base.metadata.create_all(database.engine)
@@ -25,13 +25,13 @@ def create(request: Blog, db: Session = Depends(get_db)):
     return new_blog
 
 
-@app.get("/blog")
+@app.get("/blog",response_model=List[schemas.ShowBlog])
 async def all_blogs(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 
-@app.get("/blog/{blog_id}", status_code=200)
+@app.get("/blog/{blog_id}", status_code=200, response_model=schemas.ShowBlog)
 async def single_blog(blog_id, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == blog_id).first()
     if not blog:
