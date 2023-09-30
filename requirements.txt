@@ -1,6 +1,8 @@
 fastapi~=0.103.1
 uvicorn
 pydantic~=2.4.2
-SQLAlchemy
-passlib
+SQLAlchemy~=2.0.21
+passlib~=1.7.4
 bcrypt
+python-jose
+python-multipart
